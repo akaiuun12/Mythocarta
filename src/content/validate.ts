@@ -132,6 +132,20 @@ export function validateContent(
       requireCoordinates(point, `Route "${route.id}" path point ${index}`)
     );
 
+    (route.landPaths ?? []).forEach((leg, legIndex) => {
+      if (leg.length < 2) {
+        errors.push(
+          `Route "${route.id}" land leg ${legIndex} needs at least two points.`
+        );
+      }
+      leg.forEach((point, index) =>
+        requireCoordinates(
+          point,
+          `Route "${route.id}" land leg ${legIndex} point ${index}`
+        )
+      );
+    });
+
     const stopIds = new Set<string>();
     for (const stop of route.stops) {
       requireUnique(stop.id, stopIds, `Route "${route.id}" stop`);

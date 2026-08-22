@@ -9,7 +9,13 @@ import maplibregl, {
 import "maplibre-gl/dist/maplibre-gl.css";
 import { AnimatePresence } from "framer-motion";
 import { useLocale } from "next-intl";
-import { PLACES, PLACE_BY_ID, ROUTES, type RouteRecord } from "@/content";
+import {
+  PLACES,
+  PLACE_BY_ID,
+  ROUTES,
+  type PlaceRecord,
+  type RouteRecord,
+} from "@/content";
 import { localize } from "@/lib/localize";
 import {
   createMapStyle,
@@ -23,6 +29,7 @@ import {
 } from "@/data/mapStyle";
 import {
   fractionAlong,
+  getSmoothedLandPaths,
   getSmoothedPath,
   pathBounds,
   pathLength,
@@ -54,6 +61,21 @@ const EMPTY_LINE: GeoJSON.Feature = {
   properties: {},
   geometry: { type: "LineString", coordinates: [] },
 };
+
+/**
+ * How close the camera comes when a reader picks a city. Deliberately not the
+ * maximum: the point is to put the city in the middle of the frame with its
+ * neighbours still in view, not to dive into it.
+ */
+const PLACE_FOCUS_ZOOM = 7;
+
+function multiLineFeature(legs: Point[][]): GeoJSON.Feature {
+  return {
+    type: "Feature",
+    properties: {},
+    geometry: { type: "MultiLineString", coordinates: legs },
+  };
+}
 
 function lineFeature(coordinates: Point[]): GeoJSON.Feature {
   return {
@@ -91,6 +113,8 @@ export function MythMap({
   const activeIdsRef = useRef(new Set<string>());
   const previousIdsRef = useRef(new Set<string>());
   const sidebarOpenRef = useRef(sidebarOpen);
+  /** The city a reader deliberately picked, as opposed to merely hovered. */
+  const pinnedIdRef = useRef<string | null>(null);
 
   const [ready, setReady] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -118,7 +142,10 @@ export function MythMap({
     map.touchZoomRotate.disableRotation();
 
     map.on("move", () => setViewVersion((version) => version + 1));
-    map.on("click", () => setSelectedId(null));
+    map.on("click", () => {
+      pinnedIdRef.current = null;
+      setSelectedId(null);
+    });
 
     map.on("load", () => {
       // The dimming veil sits above the land and below the routes, so an active
@@ -137,6 +164,31 @@ export function MythMap({
 
       for (const route of ROUTES) {
         const sourceId = `route-${route.id}`;
+
+        // Overland stages — a chariot road, a march up from the harbour — are
+        // drawn dashed and slightly thinner, so a reader can tell at a glance
+        // which stretches were sailed and which were walked.
+        if (route.landPaths?.length) {
+          const landSourceId = `${sourceId}-land`;
+          map.addSource(landSourceId, {
+            type: "geojson",
+            data: multiLineFeature(getSmoothedLandPaths(route.id, route.landPaths)),
+          });
+          map.addLayer({
+            id: landSourceId,
+            type: "line",
+            source: landSourceId,
+            layout: { "line-cap": "round", "line-join": "round" },
+            paint: {
+              "line-color": route.color,
+              "line-width": 2,
+              "line-dasharray": [1, 2],
+              "line-opacity": 0,
+              "line-opacity-transition": { duration: 500, delay: 250 },
+            },
+          });
+        }
+
         map.addSource(sourceId, { type: "geojson", data: EMPTY_LINE });
         map.addLayer({
           id: `${sourceId}-glow`,
@@ -210,15 +262,25 @@ export function MythMap({
 
       element.append(dot, label);
 
-      element.addEventListener("pointerenter", () => setSelectedId(place.id));
+      // Hovering previews a city; clicking *pins* it and brings the camera
+      // over. The distinction matters because focusing slides the marker out
+      // from under the cursor — without a pin, the pointerleave that follows
+      // would close the very card the click just opened.
+      element.addEventListener("pointerenter", () => {
+        if (pinnedIdRef.current) return;
+        setSelectedId(place.id);
+      });
       element.addEventListener("pointerleave", (event) => {
         // Touch taps fire a synthetic enter/leave pair; keep the card open there.
         if (event.pointerType === "touch") return;
+        if (pinnedIdRef.current) return;
         setSelectedId(null);
       });
       element.addEventListener("click", (event) => {
         event.stopPropagation();
-        setSelectedId((current) => (current === place.id ? null : place.id));
+        pinnedIdRef.current = place.id;
+        setSelectedId(place.id);
+        focusPlace(place);
       });
 
       const marker = new maplibregl.Marker({
@@ -268,6 +330,27 @@ export function MythMap({
     frameCamera(map, active);
   }, [activeRouteIds, ready]);
 
+  /**
+   * Brings a chosen city to the middle of the frame.
+   *
+   * The centre is nudged down and, when the panel is open, to the right, so the
+   * marker lands clear of both the sidebar and the hover card that opens above
+   * it — otherwise "centred" would put the card behind the header. The zoom
+   * only ever tightens: a reader who has already zoomed in keeps their scale.
+   */
+  function focusPlace(place: PlaceRecord) {
+    const map = mapRef.current;
+    if (!map) return;
+
+    map.easeTo({
+      center: place.coordinates,
+      zoom: Math.max(map.getZoom(), PLACE_FOCUS_ZOOM),
+      offset: [sidebarOpenRef.current ? 150 : 0, 70],
+      duration: 900,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
+    });
+  }
+
   /** Fades every city that has nothing to do with the active voyages. */
   function applyDimming(active: Set<string>) {
     const featured = new Set(
@@ -294,6 +377,9 @@ export function MythMap({
 
     map.setPaintProperty(`${sourceId}-line`, "line-opacity", 0.95);
     map.setPaintProperty(`${sourceId}-glow`, "line-opacity", 0.3);
+    if (route.landPaths?.length) {
+      map.setPaintProperty(`${sourceId}-land`, "line-opacity", 0.8);
+    }
 
     addStopMarkers(map, route, path, duration);
 
@@ -324,6 +410,9 @@ export function MythMap({
 
     map.setPaintProperty(`${sourceId}-line`, "line-opacity", 0);
     map.setPaintProperty(`${sourceId}-glow`, "line-opacity", 0);
+    if (route.landPaths?.length) {
+      map.setPaintProperty(`${sourceId}-land`, "line-opacity", 0);
+    }
     removeStopMarkers(route.id);
 
     window.setTimeout(() => {
@@ -393,7 +482,10 @@ export function MythMap({
     }
 
     const points = ROUTES.filter((route) => active.has(route.id)).flatMap(
-      (route) => getSmoothedPath(route.id, route.path)
+      (route) => [
+        ...getSmoothedPath(route.id, route.path),
+        ...getSmoothedLandPaths(route.id, route.landPaths ?? []).flat(),
+      ]
     );
     const [west, south, east, north] = pathBounds(points);
 
@@ -441,7 +533,10 @@ export function MythMap({
             key={selectedPlace.id}
             place={selectedPlace}
             point={{ x: anchor.x, y: anchor.y }}
-            onClose={() => setSelectedId(null)}
+            onClose={() => {
+              pinnedIdRef.current = null;
+              setSelectedId(null);
+            }}
           />
         )}
       </AnimatePresence>

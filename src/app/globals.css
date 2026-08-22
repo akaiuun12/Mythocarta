@@ -42,6 +42,22 @@ body {
   letter-spacing: 0.005em;
 }
 
+/**
+ * Classical name forms — Ἴλιον, Ilium, Athēnai.
+ *
+ * None of the three loaded webfonts ships polytonic Greek, and breathing marks
+ * (Ἴ is U+1F3C, not a plain iota) are the first thing to fall out of a face
+ * that only claims "Greek". So these are set in an explicit stack of system
+ * faces that do carry the extended Greek and Latin blocks, rather than left to
+ * whatever the browser reaches for last.
+ */
+.font-classical {
+  font-family: "Palatino Linotype", Palatino, "Book Antiqua", "New Athena Unicode",
+    "Gentium Plus", "Noto Serif", "Segoe UI Historic", "Apple Symbols", Georgia,
+    serif;
+  font-variant-ligatures: none;
+}
+
 /* Hangul sets tighter than Latin at the same size; nudge it back. */
 :lang(ko) .font-display {
   letter-spacing: 0.01em;

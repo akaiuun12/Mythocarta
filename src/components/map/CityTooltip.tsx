@@ -24,6 +24,16 @@ export function CityTooltip({ place, point, onClose }: CityTooltipProps) {
   );
   const note = alternates.find((variant) => variant.note)?.note;
 
+  // The Greek and Latin spellings were recorded from the start but had nowhere
+  // to appear, so they only ever reached a reader through the JSON-LD. They
+  // belong on the card, next to the romanization they are the source of.
+  const classical = [
+    place.names.ancient,
+    ...(place.names.variants ?? [])
+      .filter((variant) => variant.kind === "greek" || variant.kind === "latin")
+      .map((variant) => localizeValue(variant.value, locale)),
+  ].filter((form, index, forms) => form && forms.indexOf(form) === index);
+
   return (
     <motion.aside
       initial={{ opacity: 0, y: 10, scale: 0.96 }}
@@ -53,10 +63,11 @@ export function CityTooltip({ place, point, onClose }: CityTooltipProps) {
           {localize(place.names.primary, locale)}
         </h2>
         <p
-          className="mt-0.5 text-[10px] italic tracking-wider"
+          className="font-classical mt-0.5 text-[10.5px] tracking-wider"
           style={{ color: "var(--ink-soft)" }}
+          lang="und"
         >
-          {place.names.ancient}
+          {classical.join(" · ")}
         </p>
       </header>
 

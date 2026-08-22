@@ -162,8 +162,8 @@ export function RouteSidebar({
                             >
                               {t("stops")}
                             </p>
-                            <ol className="mt-1.5 space-y-1">
-                              {route.stops.map((stop) => {
+                            <ol className="mt-2 space-y-2.5">
+                              {route.stops.map((stop, index) => {
                                 const place = stop.placeId
                                   ? PLACE_BY_ID.get(stop.placeId)
                                   : undefined;
@@ -174,16 +174,56 @@ export function RouteSidebar({
                                     : stop.id;
 
                                 return (
-                                  <li
-                                    key={stop.id}
-                                    className="flex items-baseline gap-2 text-[11px]"
-                                  >
+                                  <li key={stop.id} className="flex gap-2">
+                                    {/* The pip column doubles as the thread of
+                                        the voyage: a dot per landfall, joined
+                                        by a hairline, so the order reads even
+                                        when the notes run long. */}
                                     <span
-                                      className="mt-[5px] h-1 w-1 shrink-0 rounded-full"
-                                      style={{ background: route.color }}
-                                    />
-                                    <span style={{ color: "var(--ink-soft)" }}>
-                                      {label}
+                                      className="relative flex w-1.5 shrink-0 justify-center"
+                                      aria-hidden="true"
+                                    >
+                                      <span
+                                        className="mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full"
+                                        style={{ background: route.color }}
+                                      />
+                                      {index < route.stops.length - 1 && (
+                                        <span
+                                          className="absolute bottom-[-10px] top-[11px] w-px"
+                                          style={{
+                                            background: route.color,
+                                            opacity: 0.28,
+                                          }}
+                                        />
+                                      )}
+                                    </span>
+
+                                    <span className="min-w-0 flex-1">
+                                      <span className="block text-[11px] font-semibold leading-snug">
+                                        {label}
+                                      </span>
+                                      {stop.note && (
+                                        <span
+                                          className="mt-0.5 block text-[10.5px] leading-relaxed"
+                                          style={{ color: "var(--ink-soft)" }}
+                                        >
+                                          {localize(stop.note, locale)}
+                                        </span>
+                                      )}
+                                      {stop.sources && stop.sources.length > 0 && (
+                                        <span
+                                          className="mt-0.5 block text-[9.5px] italic tracking-wide"
+                                          style={{ color: "var(--ink-faint)" }}
+                                        >
+                                          {stop.sources
+                                            .map((source) =>
+                                              [source.work, source.locus]
+                                                .filter(Boolean)
+                                                .join(" ")
+                                            )
+                                            .join(" · ")}
+                                        </span>
+                                      )}
                                     </span>
                                   </li>
                                 );

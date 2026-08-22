@@ -18,26 +18,52 @@ export const agamemnon = defineRoute({
   color: "#b91c1c",
   icon: "crown",
   path: [
+    // ── The fast run down the Aegean, hugging Euboea's eastern flank
     [26.2389, 39.9576],
-    [26.0, 39.65],
-    [25.7, 39.3],
-    [25.3, 38.9],
-    [24.95, 38.45],
+    [26.1, 39.88],
+    [25.85, 39.55],
+    [25.5, 39.1],
+    [25.15, 38.65],
+    [24.9, 38.3],
+    [24.72, 38.1],
     [24.6, 38.05],
+    // ── South of Attica, west across the Myrtoan Sea
     [24.35, 37.75],
     [24.05, 37.45],
-    [23.7, 37.25],
-    [23.35, 37.15],
-    [23.15, 37.05],
-    [22.95, 36.95],
-    [22.95, 37.15],
-    [22.88, 37.35],
-    [22.83, 37.5],
+    [23.7, 37.2],
+    [23.35, 37.0],
+    [23.1, 36.9],
+    [22.95, 36.9],
+    // ── North up the Argolic Gulf to the harbour of the Argolid
+    [23.0, 37.05],
+    [22.95, 37.2],
+    [22.88, 37.4],
+    [22.82, 37.53],
     [22.81, 37.56],
-    [22.7561, 37.7308],
+  ],
+  /**
+   * Mycenae is a citadel, not a port. The last stage of the shortest nostos was
+   * walked, not sailed — up from the beach at Nauplia to the Lion Gate, on the
+   * crimson cloth Clytemnestra had laid for him.
+   */
+  landPaths: [
+    [
+      [22.81, 37.56],
+      [22.79, 37.63],
+      [22.7561, 37.7308],
+    ],
   ],
   stops: [
-    { id: "troy", placeId: "troy", coordinates: [26.2389, 39.9576] },
+    {
+      id: "troy",
+      placeId: "troy",
+      coordinates: [26.2389, 39.9576],
+      note: {
+        en: "He stayed behind to appease Athena with sacrifices, and still beat every other king home.",
+        ko: "아테나를 달래려 제사를 올리느라 뒤에 남았고, 그러고도 어느 왕보다 먼저 고향에 닿았다.",
+      },
+      sources: [{ work: "Odyssey", locus: "3.143-147" }],
+    },
     {
       id: "kaphereus",
       name: { en: "Cape Kaphereus", ko: "카페레우스 곶" },
@@ -58,7 +84,16 @@ export const agamemnon = defineRoute({
       },
       sources: [{ work: "Agamemnon", locus: "1-39" }],
     },
-    { id: "mycenae", placeId: "mycenae", coordinates: [22.7561, 37.7308] },
+    {
+      id: "mycenae",
+      placeId: "mycenae",
+      coordinates: [22.7561, 37.7308],
+      note: {
+        en: "The road up from the harbour, and a wife at the Lion Gate with crimson cloth spread over it. He walked in, and was killed in his bath before the evening was out.",
+        ko: "항구에서 성채로 오르는 길 끝, 사자문 앞에 진홍빛 천을 깔아둔 아내가 서 있었다. 그는 걸어 들어갔고, 저녁이 저물기도 전에 욕실에서 살해되었다.",
+      },
+      sources: [{ work: "Agamemnon", locus: "905-974" }],
+    },
   ],
   sources: [{ work: "Odyssey", locus: "4.512-537" }, { work: "Agamemnon" }],
 });

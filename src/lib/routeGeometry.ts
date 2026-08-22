@@ -109,6 +109,14 @@ export function getSmoothedPath(routeId: string, control: Point[]): Point[] {
   return smoothed;
 }
 
+/** The same, for a route's overland legs. Each leg is smoothed on its own. */
+export function getSmoothedLandPaths(
+  routeId: string,
+  legs: Point[][]
+): Point[][] {
+  return legs.map((leg, index) => getSmoothedPath(`${routeId}-land-${index}`, leg));
+}
+
 /** Total length of a polyline in degree-space, used only to pace the animation. */
 export function pathLength(path: Point[]): number {
   let total = 0;

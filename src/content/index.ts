@@ -35,12 +35,14 @@ import { pelias } from "./figures/pelias";
 import { priam } from "./figures/priam";
 import { pythia } from "./figures/pythia";
 import { sisyphus } from "./figures/sisyphus";
+import { telemachus as telemachusFigure } from "./figures/telemachus";
 import { theseus } from "./figures/theseus";
 
 // ── Routes ──────────────────────────────────────────────────────────────────
 import { agamemnon as agamemnonRoute } from "./routes/agamemnon";
 import { nestor as nestorRoute } from "./routes/nestor";
 import { odysseus as odysseusRoute } from "./routes/odysseus";
+import { telemachus as telemachusRoute } from "./routes/telemachus";
 
 export const PLACES: PlaceRecord[] = [
   athens,
@@ -70,10 +72,12 @@ export const FIGURES: FigureRecord[] = [
   pythia,
   sisyphus,
   pelias,
+  telemachusFigure,
 ];
 
 export const ROUTES: RouteRecord[] = [
   odysseusRoute,
+  telemachusRoute,
   nestorRoute,
   agamemnonRoute,
 ];

@@ -26,7 +26,12 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
  * in English never downloads a Hangul glyph.
  */
 const display = Cormorant_Garamond({
-  subsets: ["latin"],
+  // "latin" alone covers only U+0000-00FF plus a handful of strays, which is
+  // short of the romanized ancient forms this atlas is full of: the macrons in
+  // Athēnai, Spartē and Mykēnai live in Latin Extended-A. Without latin-ext the
+  // browser silently swaps faces mid-word at exactly those letters, which reads
+  // as a broken character rather than a typographic fallback.
+  subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",
   display: "swap",

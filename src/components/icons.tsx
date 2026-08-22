@@ -65,10 +65,32 @@ export function CrownIcon({ className = base }: IconProps) {
   );
 }
 
+/** Telemachus — the chariot wheel that carried him from Pylos to Sparta. */
+export function ChariotIcon({ className = base }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="8.5" cy="16" r="4.5" />
+      <path d="M8.5 11.5v9M4 16h9" />
+      <path d="M13 16v-5.5h5.5L21 16" />
+      <path d="M18.5 10.5L21 5" />
+    </svg>
+  );
+}
+
 const ROUTE_ICONS = {
   odyssey: ShipIcon,
   sail: WindIcon,
   crown: CrownIcon,
+  chariot: ChariotIcon,
 } as const;
 
 export type RouteIconKey = keyof typeof ROUTE_ICONS;

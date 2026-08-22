@@ -133,7 +133,7 @@ export interface RouteRecord {
   /** Line colour on the map and in the sidebar. */
   color: string;
   /** Icon key rendered in the sidebar (see components/icons). */
-  icon: "odyssey" | "sail" | "crown";
+  icon: "odyssey" | "sail" | "crown" | "chariot";
   /**
    * The sailed track as [longitude, latitude] control points, ordered from
    * departure to arrival. These are hand-placed to follow real coastlines and
@@ -141,6 +141,16 @@ export interface RouteRecord {
    * is plenty — do not add points to fake smoothness.
    */
   path: [number, number][];
+  /**
+   * Stretches the traveller covered overland — a chariot road, the march up
+   * from the harbour to the citadel. Each entry is one continuous land leg.
+   *
+   * These are kept out of `path` on purpose: `path` is the *sailed* track, and
+   * a keel that appears to cross a headland is the one thing a map like this
+   * must never show. Land legs are drawn dashed instead, so a reader can see
+   * exactly where the hull stopped and the wheels started.
+   */
+  landPaths?: [number, number][][];
   /** Narrative landfalls, in order. Rendered as labelled stops. */
   stops: RouteStop[];
   sources?: SourceRef[];
