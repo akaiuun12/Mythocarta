@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "Mythocarta — Interactive Map of Greek Mythology",
+    "description": "Explore the world of Ancient Greek mythology on an interactive map. Discover city-states, legendary rulers, and the epic voyages of Odysseus, Nestor and Agamemnon.",
+    "keywords": "Greek mythology, interactive map, Odysseus, Trojan War, ancient Greece, Mycenae, Troy, city-states"
+  },
+  "header": {
+    "title": "Mythocarta",
+    "subtitle": "A cartography of Greek myth"
+  },
+  "map": {
+    "loading": "Charting the ancient world…",
+    "hint": "Hover a city to meet its ruler"
+  },
+  "tooltip": {
+    "alsoKnownAs": "Also known as",
+    "close": "Close"
+  },
+  "controls": {
+    "terrain": "Terrain",
+    "terrainOn": "Show mountains and relief",
+    "terrainOff": "Hide mountains and relief",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset view"
+  },
+  "sidebar": {
+    "open": "Hero voyages",
+    "close": "Close panel",
+    "title": "Hero Voyages",
+    "subtitle": "Trace a homecoming across the map",
+    "activeHint": "Following the wine-dark sea…",
+    "stops": "Landfalls",
+    "clearAll": "Clear all",
+    "sources": "Sources"
+  },
+  "attribution": {
+    "data": "Map data © OpenStreetMap contributors, tiles by OpenFreeMap, terrain by Mapzen"
+  }
+}

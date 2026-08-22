@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+:root {
+  --parchment: #efe6d0;
+  --aegean: #9dbcc4;
+  --ink: #33291b;
+  --ink-soft: #6b5d45;
+  --ink-faint: #9a8a6e;
+  --gold: #c69a45;
+  --deep: #0d5a6b;
+  --glass-bg: rgba(255, 253, 247, 0.58);
+  --glass-bg-strong: rgba(255, 253, 247, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 8px 32px rgba(51, 41, 27, 0.14);
+}
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Apple SD Gothic Neo", sans-serif;
+  font-feature-settings: "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.005em;
+}
+
+/**
+ * Cormorant Garamond has no Hangul, so Korean text falls through to Gowun
+ * Batang automatically — the same class gives an elegant serif in both
+ * languages without a locale check.
+ */
+.font-display {
+  font-family: var(--font-display), var(--font-display-ko), "Iowan Old Style",
+    Georgia, serif;
+  letter-spacing: 0.005em;
+}
+
+/* Hangul sets tighter than Latin at the same size; nudge it back. */
+:lang(ko) .font-display {
+  letter-spacing: 0.01em;
+}
+
+/* ── Glassmorphism ───────────────────────────────────────────────────────── */
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(24px) saturate(1.7);
+  -webkit-backdrop-filter: blur(24px) saturate(1.7);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* ── City markers (DOM elements positioned on the map canvas) ────────────── */
+
+.city-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.5s ease, transform 0.25s ease;
+}
+
+.city-marker:hover {
+  transform: translateY(-2px);
+}
+
+.city-marker--dimmed {
+  opacity: 0.25;
+}
+
+.city-marker__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #fffdf7;
+  border: 2px solid #8a6d3b;
+  box-shadow: 0 0 0 4px rgba(255, 253, 247, 0.35),
+    0 2px 6px rgba(51, 41, 27, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.city-marker:hover .city-marker__dot {
+  transform: scale(1.4);
+  box-shadow: 0 0 0 6px rgba(255, 253, 247, 0.45),
+    0 2px 10px rgba(51, 41, 27, 0.5);
+}
+
+.city-marker__label {
+  font-family: var(--font-display), var(--font-display-ko), Georgia, serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  color: var(--ink);
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(255, 253, 247, 0.95),
+    0 0 8px rgba(255, 253, 247, 0.8);
+  white-space: nowrap;
+}
+
+.city-marker__ancient {
+  display: block;
+  font-family: var(--font-body), sans-serif;
+  font-size: 8.5px;
+  font-weight: 400;
+  font-style: italic;
+  opacity: 0.65;
+  letter-spacing: 0.06em;
+}
+
+/* Narrative landfalls along an active hero route. */
+.stop-marker {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 7px 3px 4px;
+  border: none;
+  border-radius: 9999px;
+  background: rgba(255, 253, 247, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(51, 41, 27, 0.2);
+  cursor: default;
+  white-space: nowrap;
+  animation: stop-appear 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.stop-marker__pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  flex: none;
+}
+
+.stop-marker__label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+@keyframes stop-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── MapLibre chrome, restyled to match the glass theme ──────────────────── */
+
+.maplibregl-ctrl-attrib {
+  background: rgba(255, 253, 247, 0.62) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px 0 0 0;
+  font-size: 10px;
+  color: var(--ink-soft) !important;
+}
+
+.maplibregl-ctrl-attrib a {
+  color: var(--ink-soft) !important;
+}
+
+.maplibregl-ctrl-attrib-button {
+  background-color: rgba(255, 253, 247, 0.5) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stop-marker {
+    animation: none;
+  }
+}

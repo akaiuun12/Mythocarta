@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "미토카르타 — 그리스 신화 인터랙티브 지도",
+    "description": "고대 그리스 신화의 세계를 인터랙티브 지도로 탐험하세요. 도시국가와 전설적인 지도자들, 오디세우스·네스토르·아가멤논의 서사적 항해를 만나보세요.",
+    "keywords": "그리스 신화, 인터랙티브 지도, 오디세우스, 트로이 전쟁, 고대 그리스, 미케네, 트로이, 도시국가"
+  },
+  "header": {
+    "title": "미토카르타",
+    "subtitle": "그리스 신화의 지도"
+  },
+  "map": {
+    "loading": "고대 세계를 그리는 중…",
+    "hint": "도시에 마우스를 올려 지도자를 만나보세요"
+  },
+  "tooltip": {
+    "alsoKnownAs": "다른 이름",
+    "close": "닫기"
+  },
+  "controls": {
+    "terrain": "지형",
+    "terrainOn": "산맥과 기복 표시",
+    "terrainOff": "산맥과 기복 숨기기",
+    "zoomIn": "확대",
+    "zoomOut": "축소",
+    "reset": "시점 초기화"
+  },
+  "sidebar": {
+    "open": "영웅의 항해",
+    "close": "패널 닫기",
+    "title": "영웅의 항해",
+    "subtitle": "지도 위에 귀향의 자취를 그려보세요",
+    "activeHint": "짙은 포도줏빛 바다를 따라서…",
+    "stops": "기항지",
+    "clearAll": "모두 끄기",
+    "sources": "출처"
+  },
+  "attribution": {
+    "data": "지도 데이터 © OpenStreetMap 기여자, 타일 OpenFreeMap, 지형 Mapzen"
+  }
+}
