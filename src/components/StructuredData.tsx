@@ -1,8 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { FIGURE_BY_ID, PLACES, ROUTES } from "@/content";
 import { localize, localizeValue } from "@/lib/localize";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+import { SITE_URL } from "@/lib/siteUrl";
 
 /**
  * JSON-LD for search engines and answer engines (AEO).

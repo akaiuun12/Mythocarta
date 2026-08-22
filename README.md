@@ -72,7 +72,36 @@ your browser language.
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 measurement ID (`G-…`). Empty disables analytics entirely. |
-| `NEXT_PUBLIC_SITE_URL` | Canonical URL used in metadata, sitemap, and JSON-LD. |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata, sitemap, robots.txt and JSON-LD. Only needed once the site has its own domain — see below. |
+
+## 🚀 Deployment
+
+The app needs a server runtime: `middleware.ts` does locale detection and
+redirects, so a static export is not an option. Vercel and Netlify both work
+without configuration; the notes below assume Vercel.
+
+1. Import `Mythocarta` at [vercel.com/new](https://vercel.com/new). Next.js is
+   detected automatically — the build command, output directory and Node version
+   all come out right, and there is no `vercel.json` to write.
+2. Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` if you want analytics. Leave it empty and
+   no GA script is emitted at all.
+3. **Leave `NEXT_PUBLIC_SITE_URL` unset** unless you have attached a custom
+   domain. [`src/lib/siteUrl.ts`](src/lib/siteUrl.ts) resolves the canonical
+   origin in this order:
+
+   | | Resolves to |
+   | --- | --- |
+   | `NEXT_PUBLIC_SITE_URL` set | that value — a custom domain always wins |
+   | Production deployment | the project's production URL |
+   | Branch preview | that preview's own URL |
+   | `next dev` | `http://localhost:3000` |
+
+   This matters more than it looks. The origin is baked into `metadataBase`, the
+   sitemap, and every JSON-LD `@id`, so a deployment that gets it wrong does not
+   look broken — it quietly publishes a site telling crawlers its canonical home
+   is `localhost`. Previews additionally serve `robots.txt` with `disallow: /`,
+   so a branch cannot compete with production for its own queries.
+
 
 ## 🗂️ Project Structure
 
@@ -106,6 +135,7 @@ src/
 ├── data/mapStyle.ts       The custom MapLibre style
 ├── lib/
 │   ├── routeGeometry.ts   Spline smoothing + draw animation math
+│   ├── siteUrl.ts         Canonical origin per deployment environment
 │   └── localize.ts        Reads localized content fields
 ├── i18n/                  next-intl routing / request config
 ├── messages/              UI strings only — mythology lives in content/

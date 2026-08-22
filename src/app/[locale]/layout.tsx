@@ -9,9 +9,8 @@ import {
 } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { Analytics } from "@/components/Analytics";
+import { SITE_URL } from "@/lib/siteUrl";
 import "../globals.css";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 /**
  * Three faces, split by role rather than by language:
