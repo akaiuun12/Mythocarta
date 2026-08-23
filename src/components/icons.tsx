@@ -1,5 +1,8 @@
+import type { CSSProperties } from "react";
+
 interface IconProps {
   className?: string;
+  style?: CSSProperties;
 }
 
 const base = "h-5 w-5";
@@ -86,11 +89,32 @@ export function ChariotIcon({ className = base }: IconProps) {
   );
 }
 
+/** Menelaus — the storm swell that scattered his fleet as far as Egypt. */
+export function WaveIcon({ className = base }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M2 9c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0 3.5 2 5 0" />
+      <path d="M2 15c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0 3.5 2 5 0" />
+      <path d="M2 21c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0 3.5 2 5 0" />
+    </svg>
+  );
+}
+
 const ROUTE_ICONS = {
   odyssey: ShipIcon,
   sail: WindIcon,
   crown: CrownIcon,
   chariot: ChariotIcon,
+  wave: WaveIcon,
 } as const;
 
 export type RouteIconKey = keyof typeof ROUTE_ICONS;
@@ -187,6 +211,43 @@ export function MinusIcon({ className = base }: IconProps) {
       aria-hidden="true"
     >
       <path d="M5 12h14" />
+    </svg>
+  );
+}
+
+export function ChevronIcon({ className = base, style }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      style={style}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
+/** An open letter, for reaching the developer directly. */
+export function MailIcon({ className = base }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="5.5" width="18" height="13" rx="2.2" />
+      <path d="M4 7l8 6 8-6" />
     </svg>
   );
 }

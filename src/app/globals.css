@@ -143,21 +143,45 @@ body {
   letter-spacing: 0.06em;
 }
 
-/* Narrative landfalls along an active hero route. */
+/*
+ * Narrative landfalls along an active hero route.
+ *
+ * MapLibre positions every marker by writing `transform: translate(...)` as
+ * an inline style directly on the element it's given — and a running CSS
+ * `animation` overrides inline `transform` for as long as it's active (an
+ * `animation`, unlike a plain rule or `:hover`, beats inline style in the
+ * cascade). Putting the entrance animation on `.stop-marker` itself made
+ * every one of these markers snap to the map's untranslated (0, 0) corner
+ * the moment the animation finished and its `both` fill-mode held that final
+ * `scale(1)` transform in place forever. The animation lives on the inner
+ * `__inner` wrapper instead, leaving `transform` on the root element free for
+ * MapLibre alone to control.
+ */
 .stop-marker {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.stop-marker__inner {
   display: flex;
   align-items: center;
   gap: 5px;
   padding: 3px 7px 3px 4px;
-  border: none;
   border-radius: 9999px;
   background: rgba(255, 253, 247, 0.78);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   box-shadow: 0 2px 8px rgba(51, 41, 27, 0.2);
-  cursor: default;
-  white-space: nowrap;
+  transition: box-shadow 0.2s ease;
   animation: stop-appear 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.stop-marker:hover .stop-marker__inner {
+  box-shadow: 0 2px 10px rgba(51, 41, 27, 0.32);
 }
 
 .stop-marker__pip {
@@ -205,7 +229,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stop-marker {
+  .stop-marker__inner {
     animation: none;
   }
 }

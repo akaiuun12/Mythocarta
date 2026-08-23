@@ -30,17 +30,15 @@ export function MapControls({
         type="button"
         onClick={onToggleTerrain}
         aria-pressed={showTerrain}
+        aria-label={showTerrain ? t("terrainOff") : t("terrainOn")}
         title={showTerrain ? t("terrainOff") : t("terrainOn")}
-        className="glass-panel flex items-center gap-2 rounded-xl px-3 py-2 transition-colors"
+        className="glass-panel flex h-11 w-11 items-center justify-center rounded-xl transition-colors"
         style={{
           background: showTerrain ? "rgba(13, 90, 107, 0.9)" : undefined,
           color: showTerrain ? "#fffdf7" : "var(--ink-soft)",
         }}
       >
-        <MountainIcon className="h-[17px] w-[17px]" />
-        <span className="text-[11px] font-semibold uppercase tracking-[0.08em]">
-          {t("terrain")}
-        </span>
+        <MountainIcon className="h-[18px] w-[18px]" />
       </button>
 
       <div className="glass-panel flex flex-col overflow-hidden rounded-xl">

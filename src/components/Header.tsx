@@ -4,6 +4,9 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Logo } from "./Logo";
 import { LanguageToggle } from "./LanguageToggle";
+import { MailIcon } from "./icons";
+
+const DEVELOPER_EMAIL = "akaiuun12@gmail.com";
 
 export function Header() {
   const t = useTranslations("header");
@@ -27,7 +30,16 @@ export function Header() {
         </div>
       </div>
 
-      <div className="pointer-events-auto">
+      <div className="pointer-events-auto flex items-center gap-2">
+        <a
+          href={`mailto:${DEVELOPER_EMAIL}`}
+          aria-label={t("contact")}
+          title={t("contact")}
+          className="glass-panel flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-white/50"
+          style={{ color: "var(--ink-soft)" }}
+        >
+          <MailIcon className="h-[16px] w-[16px]" />
+        </a>
         <LanguageToggle />
       </div>
     </motion.header>

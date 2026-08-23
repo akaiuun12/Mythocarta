@@ -133,7 +133,7 @@ export interface RouteRecord {
   /** Line colour on the map and in the sidebar. */
   color: string;
   /** Icon key rendered in the sidebar (see components/icons). */
-  icon: "odyssey" | "sail" | "crown" | "chariot";
+  icon: "odyssey" | "sail" | "crown" | "chariot" | "wave";
   /**
    * The sailed track as [longitude, latitude] control points, ordered from
    * departure to arrival. These are hand-placed to follow real coastlines and

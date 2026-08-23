@@ -6,14 +6,19 @@
   },
   "header": {
     "title": "Mythocarta",
-    "subtitle": "A cartography of Greek myth"
+    "subtitle": "A cartography of Greek myth",
+    "language": "Language",
+    "contact": "Email the developer"
   },
   "map": {
     "loading": "Charting the ancient world…",
-    "hint": "Hover a city to meet its ruler"
+    "hint": "Hover a city to meet its ruler",
+    "webglTitle": "This browser can't render the map",
+    "webglBody": "Mythocarta needs WebGL, and it isn't available in this window — common inside an embedded preview or a locked-down browser. Try opening the page in a regular browser tab."
   },
   "tooltip": {
     "alsoKnownAs": "Also known as",
+    "onThisVoyage": "On this voyage",
     "close": "Close"
   },
   "controls": {

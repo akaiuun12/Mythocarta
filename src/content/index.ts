@@ -12,15 +12,20 @@ import { validateContent } from "./validate";
 // ── Places ──────────────────────────────────────────────────────────────────
 import { argos } from "./places/argos";
 import { athens } from "./places/athens";
+import { aulis } from "./places/aulis";
+import { calydon } from "./places/calydon";
 import { corinth } from "./places/corinth";
 import { delphi } from "./places/delphi";
 import { iolcus } from "./places/iolcus";
 import { ithaca } from "./places/ithaca";
 import { knossos } from "./places/knossos";
 import { mycenae } from "./places/mycenae";
+import { olympia } from "./places/olympia";
 import { pylos } from "./places/pylos";
+import { salamis } from "./places/salamis";
 import { sparta } from "./places/sparta";
 import { thebes } from "./places/thebes";
+import { tiryns } from "./places/tiryns";
 import { troy } from "./places/troy";
 
 // ── Figures ─────────────────────────────────────────────────────────────────
@@ -40,6 +45,7 @@ import { theseus } from "./figures/theseus";
 
 // ── Routes ──────────────────────────────────────────────────────────────────
 import { agamemnon as agamemnonRoute } from "./routes/agamemnon";
+import { menelaus as menelausRoute } from "./routes/menelaus";
 import { nestor as nestorRoute } from "./routes/nestor";
 import { odysseus as odysseusRoute } from "./routes/odysseus";
 import { telemachus as telemachusRoute } from "./routes/telemachus";
@@ -57,6 +63,11 @@ export const PLACES: PlaceRecord[] = [
   delphi,
   corinth,
   iolcus,
+  tiryns,
+  calydon,
+  aulis,
+  olympia,
+  salamis,
 ];
 
 export const FIGURES: FigureRecord[] = [
@@ -80,6 +91,7 @@ export const ROUTES: RouteRecord[] = [
   telemachusRoute,
   nestorRoute,
   agamemnonRoute,
+  menelausRoute,
 ];
 
 export const PLACE_BY_ID = new Map(PLACES.map((place) => [place.id, place]));
