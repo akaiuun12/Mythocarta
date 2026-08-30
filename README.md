@@ -71,21 +71,22 @@ your browser language.
 
 | Variable | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 measurement ID (`G-…`). Empty disables analytics entirely. |
 | `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata, sitemap, robots.txt and JSON-LD. Only needed once the site has its own domain — see below. |
+
+Analytics is **not** configured here — the measurement ID lives in
+[`src/ga.config.ts`](src/ga.config.ts), the same way the sibling sites keep it in
+`config.js`. See [Analytics](#-analytics-google-analytics-4).
 
 ## 🚀 Deployment
 
 The app needs a server runtime: `middleware.ts` does locale detection and
-redirects, so a static export is not an option. Vercel and Netlify both work
-without configuration; the notes below assume Vercel.
+redirects, so a static export is not an option. All five sites in this group deploy from
+Vercel, and Next.js needs no `vercel.json` here.
 
 1. Import `Mythocarta` at [vercel.com/new](https://vercel.com/new). Next.js is
    detected automatically — the build command, output directory and Node version
    all come out right, and there is no `vercel.json` to write.
-2. Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` if you want analytics. Leave it empty and
-   no GA script is emitted at all.
-3. **Leave `NEXT_PUBLIC_SITE_URL` unset** unless you have attached a custom
+2. **Leave `NEXT_PUBLIC_SITE_URL` unset** unless you have attached a custom
    domain. [`src/lib/siteUrl.ts`](src/lib/siteUrl.ts) resolves the canonical
    origin in this order:
 
@@ -102,6 +103,27 @@ without configuration; the notes below assume Vercel.
    is `localhost`. Previews additionally serve `robots.txt` with `disallow: /`,
    so a branch cannot compete with production for its own queries.
 
+
+
+## 📈 Analytics (Google Analytics 4)
+
+Every site in this group uses **its own GA4 property**, and each repo keeps its
+measurement ID in exactly one place.
+
+| Item | In this repo |
+| --- | --- |
+| Measurement ID | [`src/ga.config.ts`](src/ga.config.ts) → `GA_MEASUREMENT_ID` |
+| Loader | [`src/components/Analytics.tsx`](src/components/Analytics.tsx) — same behaviour as the shared `analytics.js` in the static sites |
+| When unset | nothing is rendered; no gtag request at all |
+| Excluded | `file://` and `localhost` |
+| Event API | `window.gaEvent(name, params)` / `window.gaPageView(path)` |
+
+The ID comes from Google Analytics → Admin → Data streams (starts with `G-`).
+It is a public identifier, so it is committed rather than stored as an env var —
+which also keeps preview deployments reporting like production.
+[`GaRouteTracker`](src/components/GaRouteTracker.tsx) sends a `page_view` on
+client-side navigation (the EN ↔ KO toggle); the first one comes from the gtag
+config itself.
 
 ## 🗂️ Project Structure
 
@@ -123,7 +145,7 @@ src/
 │   └── routes/            One file per voyage
 ├── components/
 │   ├── Header.tsx · LanguageToggle.tsx · Logo.tsx · icons.tsx
-│   ├── Analytics.tsx · StructuredData.tsx
+│   ├── Analytics.tsx · GaRouteTracker.tsx · StructuredData.tsx
 │   └── map/
 │       ├── MapExperience.tsx   Client state + lazy map loading
 │       ├── MythMap.tsx         MapLibre map, markers, route animation
