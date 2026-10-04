@@ -9,6 +9,15 @@ export const troy = definePlace({
     ancient: "Ilion",
     variants: [
       { kind: "greek", value: "Ἴλιον" },
+      {
+        kind: "alternate",
+        value: { en: "Ilios", ko: "일리오스" },
+        note: {
+          en: "Greek Ἴλιος; another Homeric name for Troy alongside Ilion.",
+          ko: "그리스어 Ἴλιος. 일리온과 함께 호메로스 서사시에서 트로이를 가리키는 이름.",
+        },
+        sources: [{ work: "Iliad" }],
+      },
       { kind: "latin", value: "Ilium" },
       {
         kind: "alternate",
