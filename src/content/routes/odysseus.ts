@@ -43,7 +43,8 @@ export const odysseus = defineRoute({
     [23.8, 36.9],
     [23.45, 36.6],
     [23.25, 36.5],
-    // ── Driven off Malea, west of Crete and along the Libyan shore
+    [23.0181, 36.2514],
+    // ── Driven off Malea, past Cythera, west of Crete and along the Libyan shore
     [22.8, 36.1],
     [22.0, 35.6],
     [20.5, 34.9],
@@ -151,6 +152,16 @@ export const odysseus = defineRoute({
         ko: "고향으로 꺾어야 할 지점. 북풍이 그를 붙잡았고, 여기서 아는 세계가 끝났다.",
       },
       sources: [{ work: "Odyssey", locus: "9.80" }],
+    },
+    {
+      id: "cythera",
+      name: { en: "Cythera (Kythira)", ko: "키테라" },
+      coordinates: [23.0181, 36.2514],
+      note: {
+        en: "Blown off course while rounding Cape Malea, Odysseus was driven past Cythera before nine days of storm carried him to the Lotus-Eaters.",
+        ko: "말레아 곶을 돌던 중 역풍에 밀린 오디세우스는 키테라를 지나 항로에서 벗어났고, 아흐레 동안 표류한 끝에 로토파고이의 땅에 닿았다.",
+      },
+      sources: [{ work: "Odyssey", locus: "9.80-84" }],
     },
     {
       id: "lotus-eaters",
