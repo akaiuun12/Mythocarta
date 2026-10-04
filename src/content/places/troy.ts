@@ -19,6 +19,15 @@ export const troy = definePlace({
         },
       },
       {
+        kind: "alternate",
+        value: { en: "Ilios", ko: "일리우스" },
+        note: {
+          en: "Homer's Ilios is another name for Troy, also called Ilion.",
+          ko: "호메로스가 트로이를 부르는 또 다른 이름. 일리온이라고도 한다.",
+        },
+        sources: [{ work: "Iliad", locus: "6.448" }],
+      },
+      {
         kind: "epithet",
         value: { en: "well-walled Ilion", ko: "성벽 높은 일리온" },
         note: {
