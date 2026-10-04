@@ -43,7 +43,10 @@ export const odysseus = defineRoute({
     [23.8, 36.9],
     [23.45, 36.6],
     [23.25, 36.5],
-    // ── Driven off Malea, west of Crete and along the Libyan shore
+    // ── Driven past Cythera: schematic offshore passage, not a landing
+    [23.2, 36.3],
+    [23.15, 36.05],
+    // ── West of Crete and along the Libyan shore
     [22.8, 36.1],
     [22.0, 35.6],
     [20.5, 34.9],
@@ -151,6 +154,16 @@ export const odysseus = defineRoute({
         ko: "고향으로 꺾어야 할 지점. 북풍이 그를 붙잡았고, 여기서 아는 세계가 끝났다.",
       },
       sources: [{ work: "Odyssey", locus: "9.80" }],
+    },
+    {
+      id: "cythera",
+      name: { en: "Cythera", ko: "키테라" },
+      coordinates: [23.0181, 36.2514],
+      note: {
+        en: "Beyond Cape Malea, the north wind and currents swept him past Cythera. Homer describes no landing here; nine days of drifting followed before the land of the Lotus-Eaters.",
+        ko: "말레아 곶을 돌던 그를 북풍과 해류가 키테라 너머로 밀어냈다. 호메로스는 이곳에 상륙했다고 하지 않는다. 이후 아흐레를 표류한 끝에 로토파고이의 땅에 닿았다.",
+      },
+      sources: [{ work: "Odyssey", locus: "9.80-84" }],
     },
     {
       id: "lotus-eaters",
